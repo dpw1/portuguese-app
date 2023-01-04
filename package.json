@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@shopify/polaris": "^10.17.0",
     "@tanstack/react-table": "^8.7.0",
     "dotenv": "^16.0.3",
     "ka-table": "^7.6.3",

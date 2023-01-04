@@ -395,13 +395,46 @@ $ka-header-cell-height: 47px !default;
 }
 
 /* Custom code 
-============================ */
+============================================ */
 
 [id] .Table {
   width: 100%;
   // max-width: 800px;
   // width: 100%;
   // margin: 0 auto;
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: 8px;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  .ka-thead-cell [type="checkbox"] {
+    opacity: 1;
+    left: unset;
+
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(2);
+
+    top: 50%;
+  }
+
+  select {
+    display: block;
+    max-width: 100%;
+  }
 
   .ka-table-wrapper {
     height: 500px;
@@ -442,5 +475,11 @@ $ka-header-cell-height: 47px !default;
       margin-right: 5px;
       height: fit-content;
     }
+  }
+
+  select,
+  input {
+    background: var(--p-background);
+    color: var(--p-text);
   }
 }

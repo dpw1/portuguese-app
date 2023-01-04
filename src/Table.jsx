@@ -3,6 +3,10 @@ import React, { useState } from "react"
 import { kaReducer, Table } from "ka-table"
 import { DataType, FilteringMode, SortingMode } from "ka-table/enums"
 import FilterRowNumber from "ka-table/Components/FilterRowNumber/FilterRowNumber"
+import {
+  updateFilterRowOperator,
+  updateFilterRowValue,
+} from "ka-table/actionCreators"
 import brazilFlag from "./assets/br_flag.svg"
 import portugalFlag from "./assets/pt_flag.svg"
 
@@ -14,6 +18,38 @@ const OverviewDemo = (props) => {
 
     return e
   })
+
+  const NSFWCustomSearch = ({ column, dispatch }) => {
+    const toNullableBoolean = (value) => {
+      switch (value) {
+        case "true":
+          return true
+        case "false":
+          return false
+      }
+      return value
+    }
+    return (
+      <div>
+        <select
+          className="form-control"
+          defaultValue={column.filterRowValue}
+          onChange={(event) => {
+            dispatch(
+              updateFilterRowValue(
+                column.key,
+                toNullableBoolean(event.target.value),
+              ),
+            )
+          }}
+        >
+          <option value={""}>Exibir tudo</option>
+          <option value={"true"}>Exibir só palavrões</option>
+          <option value={"false"}>Esconder palavrões</option>
+        </select>
+      </div>
+    )
+  }
 
   const HeadCell = ({ column: { title }, flag }) => {
     return (
@@ -41,6 +77,7 @@ const OverviewDemo = (props) => {
         key: "nsfw",
         title: "Palavrão",
         dataType: DataType.Boolean,
+        filterRowValue: false,
       },
       { key: "is_sentence", title: "Frase", dataType: DataType.Boolean },
       {
@@ -76,6 +113,18 @@ const OverviewDemo = (props) => {
       if (column.key === "nsfw") {
         return value === true ? "Sim" : "Não"
       }
+
+      if (column.key === "is_sentence") {
+        return value === true ? "Sim" : "Não"
+      }
+
+      if (column.key === "slang") {
+        return value === true ? "Sim" : "Não"
+      }
+
+      if (column.key === "important") {
+        return value === true ? "Sim" : ""
+      }
     },
   }
 
@@ -96,6 +145,14 @@ const OverviewDemo = (props) => {
                 props.column.key === "pt_pt"
               ) {
                 return <HeadCell flag={props.column.key} {...props} />
+              }
+            },
+          },
+          filterRowCell: {
+            content: (props) => {
+              switch (props.column.key) {
+                case "nsfw":
+                  return <NSFWCustomSearch {...props} />
               }
             },
           },
